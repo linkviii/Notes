@@ -4,6 +4,8 @@ There are various MIDI editors and MIDI capable DAWs (Digital audio workstations
 
 This guide is written for a Windows user, but Reaper works on Mac and Linux.
 
+This might be overwhelming on only a small laptop screen. If you have the option, go to a desk.
+
 ## Background 
 MIDI is both the name of the protocol that electronic instruments speak and the file format of songs produced with these electronic instruments in mind. A MIDI file (.mid) is like sheet music for a computer. However, you do not need to be able to read or play sheet music to work with MIDI files. More specifically, a MIDI file is a sequence of commands telling a program how to play back a song.
 
@@ -123,4 +125,128 @@ After saving you can close Reaper. Launching Reaper again will open the last use
 ### Reaper Basics
 https://www.reaper.fm/guides/REAPER%20Quick%20Start.pdf
 
+* Scrolling while hovering over the timeline zooms in time.
+* Scrolling while hovering over the track list does "normal" scrolling. Pans the view up and down if there are more than what fits on your screen.
+* Holding <kbd>Ctrl</kbd>+<kbd>Alt</kbd> while scrolling over the timeline will also do normal vertical scrolling.
+* Holding <kbd>Alt</kbd> while scrolling will pan horizontally. (Touchpad horizontal scrolling also works.)
+* Holding <kbd>Ctrl</kbd> while scrolling will adjust how much vertical space tracks take up.
+
 ### Assigning playback instruments
+The MIDI we imported was made with GM 1 instruments. But Reaper is a tool for modern musicians and doesn't really care about the legacy instrument information from our file. So if we hit play right after importing the track, we'll hear nothing. Reaper wants us to tell it how it should perform each track. Which, that is like one of the reasons we're using a DAW like Reaper.
+
+But first there's just a bit more of setup.
+
+#### Renaming tracks
+`town.mid` is a nice MIDI where all the tracks are labeled with the expected instruments and the tracks use all the playback channels in order. But not all MIDIs are this nice. So after a small amount of googling I found this script to rename the tracks and we're going to run it.
+
+Open the Action window: *`Actions → Show action list...`*
+
+![](Importing-Midi-into-OoT-with-help-from-Reaper/show_action_window.png)
+
+Click the **`New action...`** button then select *`New ReaScript...`*.
+
+![](Importing-Midi-into-OoT-with-help-from-Reaper/new_action.png)
+
+This opens a file save window. 
+* Use the default save location.
+* Set the *`Save as type`* to `EEL2 files (*.eel)`.
+* Use the filename `rename_midi_tracks`
+* Hit the **`Save`** button.
+
+![](Importing-Midi-into-OoT-with-help-from-Reaper/save_script.png)
+
+That will open this funny window:
+
+![](Importing-Midi-into-OoT-with-help-from-Reaper/dev_window.png)
+
+We're going to copy this script and paste it into this window. 
+* Open https://gist.githubusercontent.com/linkviii/3d12c04c5b05c3bdd8927292bce6c9ba/raw/592e7539d1f2cfb18b663f33a92ade73da2cc7f2/rename_midi_tracks.eel 
+* Hit <kbd>Ctrl</kbd>+<kbd>a</kbd> to select all the text
+* Hit <kbd>Ctrl</kbd>+<kbd>c</kbd> to copy it.
+* Select the funny black Reaper window.
+* Hit <kbd>Ctrl</kbd>+<kbd>v</kbd> to paste the script.
+* Hit <kbd>Ctrl</kbd>+<kbd>s</kbd> to save the script.
+* Now close the funny window.
+
+Now that we have the script we're going to run it.
+* Select everything on the timeline
+  - Click anywhere in the timeline.
+  - Hit <kbd>Ctrl</kbd>+<kbd>a</kbd>
+* Run the rename tracks script
+  - If you closed the Actions window, open it again
+  - Type into the *`Filter`* box `rename midi`.
+  - Double click the script
+
+![](Importing-Midi-into-OoT-with-help-from-Reaper/run_rename.png)
+
+Your tracks should now look like this:
+
+![](Importing-Midi-into-OoT-with-help-from-Reaper/after_rename.png)
+
+#### Put tracks in a folder
+One last bit of house keeping before we actually get to play with instruments. We're grouping all our tracks together in a folder.
+* Click on any track in the left panel
+* Hit <kbd>Ctrl</kbd>+<kbd>a</kbd>
+* Right click any track
+* Select *`Move tracks to folder`* → *`New folder track`* 
+
+![](Importing-Midi-into-OoT-with-help-from-Reaper/move_to_folder.png)
+
+After moving to a folder, it should look like this.
+
+![](Importing-Midi-into-OoT-with-help-from-Reaper/after_folder.png)
+
+<kbd>Ctrl</kbd>+<kbd>s</kbd>
+
+#### Assigning OoT instruments with TX16Wx
+Click the **`FX`** button on the folder track.
+
+![](Importing-Midi-into-OoT-with-help-from-Reaper/FX_button.png)
+
+This opens the FX plugin browser. Type `wx` into the *`Filter`* and double click `VST3i: TX16Wx (CWITEC)`
+
+![](Importing-Midi-into-OoT-with-help-from-Reaper/fx_window.png)
+
+This opens a giant window for the TX16Wx plugin. Arrange your windows so that you can see the track list in Reaper.
+
+Use the file browser in  the plugin to find the `OoT_Soundfonts_2.0.1` folder. Once you find it you should press the star **`★`** button to bookmark it.
+
+You should be like here:
+
+![](Importing-Midi-into-OoT-with-help-from-Reaper/first_wx.png)
+
+
+**Finally, now the fun part!**
+
+Each `.sf2` file is a set of instruments as they are used in OoT. 
+
+Lets double click `16 Shop Theme.sf2`. Oh. It only has 7 instruments and `town.mid` uses more than that. Oh well. Lets try to make it work. It has some of what we need. AND it has percussion. That is not a given for oot.
+
+Double click `Nylon Guitar`. This will assign the instrument to Ch01. Finally now if we hit play in Reaper we will hear anything at all. We got a groovy guitar line. And that matches the intent of our original "1 - Acoustic Guitar" track. We can also double click one of the other instruments and see how they would sound instead.
+
+For the bigger picture on how an instrument sounds, press the *`Regions`** button. This will expand a view of a piano keyboard and will show what ranges of the keyboard use what samples for the virtual instrument. You can press the keys to see how any note will sound.
+
+![](Importing-Midi-into-OoT-with-help-from-Reaper/wx_regions.png)
+
+Alright. Next track. Right click empty space below and select *`New slot`*.
+
+![](Importing-Midi-into-OoT-with-help-from-Reaper/new_slot.png)
+
+When you run out of empty space to click on for new tracks, you can instead right click somewhere of an existing slot and select *`New program slot`*.
+
+![](Importing-Midi-into-OoT-with-help-from-Reaper/new_slot2.png)
+
+Click on the new slot to focus it. Notice how it says `Ch02`. This is going to be the instrument for our "2 - Electric Guitar" track. Well nothing fits... Lets just select Nylon Guitar again and move on for now.
+
+
+Rinse and repeat...
+
+Track 10: Drums. We have `Conga / Shaker`. But if we expand **`Regions`**, we'll see that this is nothing like a standard MIDI drum kit. Well maybe it will work out. Otherwise we'll have to do some arranging work later.
+
+All together:
+
+![](Importing-Midi-into-OoT-with-help-from-Reaper/all_assigned.png)
+
+Hit play in Reaper. Ya know, this sounds pretty good.
+
+<kbd>Ctrl</kbd>+<kbd>s</kbd>
