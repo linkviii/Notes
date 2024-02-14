@@ -250,3 +250,80 @@ All together:
 Hit play in Reaper. Ya know, this sounds pretty good.
 
 <kbd>Ctrl</kbd>+<kbd>s</kbd>
+
+#### Saving our instruments to the MIDI
+We had our fun. Now back to the tedious part. Open a notepad and write down every instrument we selected TX16Wx.
+
+```
+Guitar
+Guitar
+Bass
+Accordion
+Accordion
+Trumpet
+Trombone
+Trumpet
+Bass
+Conga/shaker
+Accordion
+```
+
+We can now close TX16Wx window. Instruments will still play even with it closed.
+
+Now open https://www.chisako.eu/deathbasketslair_backup/OoT_Instr_List.html . This page lists the instrument ID numbers for each instrument set. We used the Shop instrument set so we'll look for that on this page. In our text file we're going to write down the matching instrument number.
+
+```
+Guitar		0
+Guitar		0
+Bass		2
+Accordion	1
+Accordion	1
+Trumpet		4
+Trombone	3
+Trumpet		4
+Bass		2
+Conga/shaker OxA
+Accordion	1
+```
+
+Now we put these numbers into our MIDI.
+
+1. On the Reaper timeline, double click on the "1 - Acoustic Guitar" track. 
+   * This will open the detailed MIDI editor.
+2. Click on the Event List tab. 
+   * A table should now be shown.
+3. Find the row with the *`Type`* value of `PC`.
+   * PC stans for Program Change. This is MIDI speak for switching instruments.
+4. Edit the value for that row and set it to the one written down in the text file
+   * Check off that line in the text file to help keep track of what you've done
+5. Select the next track.
+   * There is a drop down in the bottom right.
+   * You can also close this window and double click from the timeline on another track.
+
+Rinse and repeat.
+
+![](Importing-Midi-into-OoT-with-help-from-Reaper/set_pc.png)
+
+Track 10: Our reference site listed "Drum" as having the hexadecimal value 0xA. We need to convert this to decimal to enter it into Reaper. In this case the decimal value for 0xA is 10.
+
+```
+Guitar		0	Done
+Guitar		0	Done
+Bass		2	Done
+Accordion	1	Done
+Accordion	1	Done
+Trumpet		4	Done
+Trombone	3	Done
+Trumpet		4	Done
+Bass		2	Done
+Conga/shaker 10	Done
+Accordion	1	Done
+```
+
+<kbd>Ctrl</kbd>+<kbd>s</kbd>
+
+### Export the MIDI
+
+### Load into seq64
+
+#### Oh no warnings to fix.
